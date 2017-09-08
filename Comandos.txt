@@ -1,0 +1,90 @@
+Comandos de Node.js
+
+	Process
+		process.arch y process.platform - Identifica la arquitectura del sistema operativo
+		process.features - Identifica el sistema operativo
+		process.pid - Muestra el identificador del proceso
+		process.cwd() - Muestra el directorio de trabajo
+		process.chdir() - Cambia el directorio de trabajo
+		process.execPath - Muestra el path donde se inicio el proceso
+		process.env - Muestra las variables de entorno del usuario
+		process.version - Muestra la versión de Node
+		process.versions - Muestra las librerias nativas
+			- En sistemas *nix - 
+		process.getuid() - Obtiene el identificador de usuario
+		process.setuid() - Establece el identificador de usuario
+		process.getgid() - Obtiene el identificador del grupo de usuarios
+		process.setgid() - Establece el identificador del grupo de usuarios
+		process.uptime() - Muestra el tiempo de ejecución del proceso
+		process.memoryUsage() - Muestra la memoria consumida por el proceso
+
+		process.moduleLoadList - Registro de módulos cargados
+			NativeModule - Módulos cargados a traves del objeto NativeModule
+			Binding - Módulos escritos en C/C++
+		process.binding() - Carga módulos binding
+		process.dlopen() - Carga modulos binding (o addon) de terceros
+		process.uvCounters() - Obtiene los contadores internos del bucle de eventos
+		process.nextTick()
+
+		process.stdout - Salida estandar (bloqueante)
+		process.stderr - Error estandar (bloqueante)
+		process.stdin - Entrada (en pausa si no se trata de un stream)
+		process.openStdin() - Método para leer de process.stdin
+
+		process.exit() - Termina la ejecución del programa emitiendo un código de salida
+		process.kill() - Envía señales a otros procesos
+
+	Script - Inicio de Node.js
+		node [nombre_archivo].js - Modo normal
+		node (-e|-eval) [nombre_archivo].js - Equivalente
+
+	REPL - Read Eval Print Loop
+		node - Inicia el modo REPL
+
+	Debug
+	  node -debug [nombre_archivo].js
+
+Módulos de Node.js
+
+	Modulos cargados al inicio:
+		console (STDIO) - Imprime mensajes, con info, log o trace (entre otros)
+		timers - Manejo de contadores
+		module - Sistema de modulos (a traves de require(), que obtiene los exports en una variable 'modulo')
+		buffer - Maneja objetos binarios
+
+	Modulos disponibles:
+		util - Utilidades sobre el objeto
+			inherits(constructor, superconstructor) - Extiende clases de JS a traves de la herencia
+		events - Provee la clase EventEmitter
+		stream - Representa los flujos de caracteres
+		crypto - Algoritmos y capacidades de cifrado
+		tls - Comunicaciones cifradas con el protocolo TLS/SSL
+		string_decoder - Desde un buffer obtiene cadenas de caracteres utf-8
+		fs - Trabaja con el sistema de ficheros (sincrono o asincrono)
+		path - Maneja y transforma la ruta de archivos y directorios
+		net - Maneja de forma asíncrona servidores y clientes con Stream sobre el protocolo TCP
+		dgram - Maneja datagramas sobre el protocolo UDP
+		dns - Métodos para tratar con el protocolo DNS
+		http - Maneja streams para la creación y uso de conexiones bajo HTTP
+		https - Version del protocolo HTTP con conexion segura TLS/SSL
+		url - formateo y analisis de la url
+		querystring - Utilidades para las queries en HTTP
+		readline - Lectura linea a linea de un Stream, normalmente por STDIN
+		repl - bucle de lectura y evaluación de la STDIN
+		vm - compilacion y ejecucion bajo demanda de código
+		child_process - creacion y manejo de hijos (no bloqueante)
+		tty - Ajusta el modo de trabajo si la entrada es una terminal
+		zlib - compresión y descompresión de Streams con algoritmos zlib y gzip
+		os - Acceso a la información del sistema operativo donde se ejecuta Node
+		_debugger - Depurador de Node
+		cluster - Creacion y gestion de procesos Node en procesadores multi-core
+		punycode - Convierte urls en caracteres ascii
+		domain - Experimental
+
+	Modulos auxiliares:
+		_linklist - Encadena temporizadores con el mismo tiempo de espera (timeouts)
+		buffer_ieee754 - Lectura y escritura de números en formato flotante
+		constants - Constastes disponibles de la plataforma
+		freelist - Mantiene un conjunto de parsers HTTP que procesan las peticiones HTTP del servidor
+		sys - Obsoleto. Se utiliza utils
+		
