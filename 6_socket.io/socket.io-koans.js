@@ -14,7 +14,7 @@ koanize(this);
 exports.createGame = function(server){
 
 	io = socketio.listen(server);
-	io.set('log level', 1);
+	//io.set('log level', 1);
 
 	/*
 		KOAN #1
@@ -32,8 +32,11 @@ exports.createGame = function(server){
 			var username = message.username;
 			
 			if (username && username != '' && startingPlayer != username){
-				socket.set('username', username);
-				socket.set('score', 0);
+				//socket.set('username', username);
+				socket.username = username;
+				//socket.set('score', 0);
+				socket.score = 0;
+				
 				/*
 					KOAN #3
 					As result of the joins message, the Server must acknowledge it sending the username back to the client:
@@ -79,7 +82,8 @@ exports.createGame = function(server){
 				The server must be able to know what room the client is in:
 				for (roomId in io.sockets.manager.___[socket.id]){
 			*/
-			for (roomId in io.sockets.manager.roomClients[socket.id]){
+			//for (roomId in io.sockets.manager.roomClients[socket.id]){
+			for (roomId in io.socket[socket.id].rooms){
 				if (roomId != '') break;
 			};
 
@@ -128,7 +132,8 @@ exports.createGame = function(server){
 						*/
 						socket.get('score', function(err, score){
 							score += 2;
-							socket.set('score', score);
+							//socket.set('score', score);
+							socket.score = score;
 							room.emit('score', { username: username, score: score } ); 
 						});
 					} else {
