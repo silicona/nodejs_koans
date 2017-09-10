@@ -129,11 +129,11 @@ app.post('/register', function(req, res){
 		
 		whizr.save(function(err){
 			if (err) {
-    			res.send('Error', 500);
-                return;
+    		res.send('Error', 500);
+        return;
 			}
-            req.session.whizr = whizr;
-   			res.redirect('/' + username);
+      req.session.whizr = whizr;
+   		res.redirect('/' + username);
 		});
 	});
 });
@@ -149,7 +149,7 @@ app.post('/whizr', checkAuth, function(req, res){
 	if ( text == null || text.length  == 0 || text.length >= 140) {
 		//send error PERO ESTE N0!
 		res.redirect('Error', 404);
-        return;
+    return;
 	}
 	
 	var whiz = new models.Whiz();
@@ -160,12 +160,11 @@ app.post('/whizr', checkAuth, function(req, res){
 	whiz.save(function(err){
 
 		if (err) {
-            res.send("Error", 500);
-            return;
-        }
+      res.send("Error", 500);
+      return;
+    }
 
 		res.redirect('/' + req.session.whizr.username);
-
 	});
 });
 
@@ -180,7 +179,7 @@ app.post('/follow', checkAuth, function(req, res){
 	
 	if (followTo.length == 0 || followTo == null || followTo == req.session.whizr.username){
 		//send error
-        return;
+    return;
 	}
 
 	models.Whizr.update( {username: req.session.whizr.username}, { $addToSet: { following: followTo } }, null, function(err, numAffected){
@@ -204,7 +203,7 @@ app.post('/unfollow', checkAuth, function(req, res){
 	models.Whizr.update( {username: req.session.whizr.username }, { $pull: { following: unfollow } }, null, function(err, numAffected){
 		if (!err) {
 			// updates the session avoiding query
-            // the database to update session data
+      // the database to update session data
 			var following = req.session.whizr.following;
 			following.splice(following.indexOf(unfollow), 1);			
 			res.redirect('/' + unfollow);
@@ -217,10 +216,10 @@ module.exports = exports = app;
 
 // To ignore: for testing purposes
 app.get('/:username/following', function(req, res){
-    models.Whizr.findOne({username: req.param('username')}, function(err, doc){
+  models.Whizr.findOne({username: req.param('username')}, function(err, doc){
 		if(err){
-            res.send('Not Found', 404);
-        };
-        res.send(200, { following: doc.following});
-    });
+      res.send('Not Found', 404);
+    };
+    res.send(200, { following: doc.following});
+  });
 });

@@ -87,4 +87,22 @@ Módulos de Node.js
 		constants - Constastes disponibles de la plataforma
 		freelist - Mantiene un conjunto de parsers HTTP que procesan las peticiones HTTP del servidor
 		sys - Obsoleto. Se utiliza utils
+
+Cap 7 Socket.IO
+	
+	Websocket:
+		websocket() - Constructor
+		websocket.readyState - estado de la conexión (connecting, connected, closing, closed)
+		close() - Metodo de finalizacion
+		onOpen()
+		onError()
+		onMessage()
+		onClose()
+		websocket.send() - Envio de datos
+		websocket.bufferedAmount - Propiedad con la cola de espera de datos
+	Adobe flash socket
+	Ajax Long Polling
+	Ajax Multipart Streaming
+	Forever Iframe
+	JSONP Polling
 		

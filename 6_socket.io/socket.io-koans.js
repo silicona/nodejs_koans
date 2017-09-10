@@ -19,13 +19,15 @@ exports.createGame = function(server){
 	/*
 		KOAN #1
 		Server must be able to receive incoming connections
+		io.sockets.on(___, function(socket){
 	*/
-	io.sockets.on(___, function(socket){
+	io.sockets.on('connection', function(socket){
 		/*
 			KOAN #2
-			The server must be able to properly act to joins messages from client
+			The server must be able to properly act to joins messages from client:
+			socket.___('joins', function(message, callback){
 		*/
-		socket.___('joins', function(message, callback){
+		socket.on('joins', function(message, callback){
 
 			var username = message.username;
 			
@@ -34,10 +36,10 @@ exports.createGame = function(server){
 				socket.set('score', 0);
 				/*
 					KOAN #3
-					As result of the joins message, the Server must acknowledge
-					it sending the username back to the client
+					As result of the joins message, the Server must acknowledge it sending the username back to the client:
+					___(username);
 				*/				
-				___(username);
+				callback(username);
 				
 				if (!waitingRoom){
 					startingPlayer = username;
@@ -49,10 +51,10 @@ exports.createGame = function(server){
 					socket.join(waitingRoom);
 					/*
 						KOAN #4
-						Having two players in a room, the server must be able to
-						notify both the start of the game
+						Having two players in a room, the server must be able to notify both the start of the game:
+						io.sockets.___(waitingRoom).emit('start', { players: [startingPlayer, username] });
 					*/
-					io.sockets.___(waitingRoom).emit('start', { players: [startingPlayer, username] });
+					io.sockets.in(waitingRoom).emit('start', { players: [startingPlayer, username] });
 					waitingRoom = null;
 					startingPlayer = null;
 				};
@@ -60,10 +62,10 @@ exports.createGame = function(server){
 				/*
 					KOAN #5
 					The server must handle properly faulty inputs
+					socket.___('error', { code: 0, msg: 'Username not provided, invalid or duplicated' });
 				*/
-				socket.___('error', { code: 0, msg: 'Username not provided, invalid or duplicated' });
-			}
-			
+				socket.emit('error', { code: 0, msg: 'Username not provided, invalid or duplicated' });
+			}	
 		});
 		
 		socket.on('discover', function(card){
@@ -74,11 +76,13 @@ exports.createGame = function(server){
 			var roomId = '';
 			/*
 				KOAN #6
-				The server must be able to know what room the client is in
+				The server must be able to know what room the client is in:
+				for (roomId in io.sockets.manager.___[socket.id]){
 			*/
-			for (roomId in io.sockets.manager.___[socket.id]){
+			for (roomId in io.sockets.manager.roomClients[socket.id]){
 				if (roomId != '') break;
 			};
+
 			roomId = roomId.substring(1);
 			var room = io.sockets.in(roomId);
 			var game = room2game[ roomId ];
@@ -90,8 +94,9 @@ exports.createGame = function(server){
 			/*
 				KOAN #7 (I)
 				The socket must obtain any client info from the socket
+				socket.___('username', function(err, username){
 			*/
-			socket.___('username', function(err, username){
+			socket.get('username', function(err, username){
 				
 				if (err) {
 					console.log("Discover: error recuperando username", err);
@@ -119,10 +124,11 @@ exports.createGame = function(server){
 							KOAN #7 (II)
 							The socket must obtain any client info from the socket
 							and, once updated, save in it again
+							socket.___('score', function(err, score){
 						*/
-						socket.___('score', function(err, score){
+						socket.get('score', function(err, score){
 							score += 2;
-							socket.___('score', score);
+							socket.set('score', score);
 							room.emit('score', { username: username, score: score } ); 
 						});
 					} else {
@@ -134,8 +140,7 @@ exports.createGame = function(server){
 					if (game.isOver()) {
 						room.emit('finish');
 						delete room2game[roomId];
-					}
-					
+					}				
 				}
 			});
 		});

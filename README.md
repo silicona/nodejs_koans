@@ -15,7 +15,7 @@ Para que el aprendizaje sea interactivo, en el código fuente de las apps hay al
 - Capítulo 2: Implementación de un servidor RTP (Real Time Protocol)
 - Capítulo 3: Línea de comandos remota para controlar el servidor RTP
 - Capítulo 4: Sencilla interfaz web tipo Reproductor para el servidor RTP
-- Capítulo 5: Whizr, clon de Twitter
+- Capítulo 5: Whizr, clon de Twitter - Obsoleto (Revisar)
 - Capítulo 6: Juego Top Memory
 
 Para poder ejecutar las aplicaciones y los Koans, es necesario instalar Jasmine, Express y Socket.IO:
@@ -39,7 +39,7 @@ To make the learning interactive, inside the source code of the apps there are s
 - Chapter 2: RTP (Real Time Protocol) server implementation
 - Chapter 3: Simple remote command line control for RTP server
 - Chapter 4: Simple web player interface for RTP server
-- Chapter 5: Whizr, clone of Twitter
+- Chapter 5: Whizr, clone of Twitter - Deprecated (review)
 - Chapter 6: Top Memory game
 
 In order to have them running, it is mandatory to install Jasmine, Express and Socket.IO:
