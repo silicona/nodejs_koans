@@ -1,7 +1,7 @@
 var http = require('http'),
-    io = require('socket.io-client'),
+  io = require('socket.io-client'),
 	topMemory = require('../socket.io-koans.js'),
-    TestingClient = require('../models/TestingClient.js');
+  TestingClient = require('../models/TestingClient.js');
 
 describe('Test suite for Top Memory Koans', function(){
 

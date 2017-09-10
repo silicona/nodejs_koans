@@ -1,24 +1,27 @@
 var express = require('express'),
-	crypto = require('crypto');
+	crypto = require('crypto'),
+	//connect = require('connect');
 
 var models = require('./models/whizr.js');
 
 var app = express();
+//var con = connect();
 
 app.engine('.html', require('ejs').__express);
 app.set('view engine', 'ejs');
 
-app.configure(function(){
+//app.configure(function(){
     /*
         KOAN #1
         The Application must be properly configured to serve favicon
-    */
 	app.___(express.favicon()); // avoid call twice the routes
+    */
+	app.use(express.favicon()); // avoid call twice the routes
 	app.use(express.static(__dirname + '/public'));
 	app.use(express.cookieParser());
 	app.use(express.session({ secret: "Node.js koans" }));
 	app.use(express.bodyParser()); // to parse post params
-});
+//});
 
 /**********************
 	PROFILE & HOME    *
@@ -27,8 +30,9 @@ app.configure(function(){
 /*
     KOAN #2
     Application must handle index page
-*/
 app.___('/', function(req, res){
+*/
+app.get('/', function(req, res){
 	res.sendfile('./views/index.html');
 });
 
@@ -39,12 +43,14 @@ app.get('/:username', function(req, res){
             /*
                 KOAN #3
                 Application must be able to generate simple responses
-            */
 			res.___(404, 'Not found');
+            */
+			res.send(404, 'Not found');
 		} else {
             /*
                 KOAN #4
                 Application must be able to produce dynamic responses according to a view
+		    res.___('home.html', {  name: doc.name, username: doc.username, whizr: req.session.whizr } )
             */
 		    res.___('home.html', {  name: doc.name, username: doc.username, whizr: req.session.whizr } )
         }
