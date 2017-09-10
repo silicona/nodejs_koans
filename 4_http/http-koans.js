@@ -4,18 +4,20 @@ var http = require('http'),
 	querystring = require('querystring');
 
 var listServer = http.createServer();
-/*
-    KOAN #1
-    should make the server to response incoming requests
-*/
-listServer.on(___, function(req, res){
+	/*
+	  KOAN #1
+	  should make the server to response incoming requests
+		listServer.on(___, function(req, res){
+	*/
+listServer.on('request', function(req, res){
 
 	var self = this;
-/*
-    KOAN #2
-    should make the server to properly read the requests headers
-*/	
-	var credentials = req.___["authorization"];
+		/*
+		  KOAN #2
+		  should make the server to properly read the requests headers
+			var credentials = req.___["authorization"];
+		*/	
+	var credentials = req.headers["authorization"];
 	var userAndPass, broadcastIp, pass;
 	if (credentials){
 		userAndPass = new Buffer(credentials.split(' ')[1], 'base64').toString('ascii').split(':');
@@ -29,21 +31,23 @@ listServer.on(___, function(req, res){
 		res.end();
 		return;
 	}
-/*
-    KOAN #3
-    should make the server to use url module
-*/	
-	var uri = url.___(req.url);
-/*
-    KOAN #4
-    should make the server to identify the request method
-*/
-	switch(req.___){
+		/*
+		  KOAN #3
+		  should make the server to use url module
+			var uri = url.___(req.url);
+		*/	
+	var uri = url.parse(req.url);
+		/*
+		  KOAN #4
+		  should make the server to identify the request method
+			switch(req.___){
+		*/
+	switch(req.method){
 		case 'GET':
 			var path = uri.pathname;
 			if ( path == '/' ){
-                var player = this.broadcastList[broadcastIp];
-                writeDocument(res, {group:broadcastIp, paused:player.paused, tracks:player.list(), currentTrack:player.currentTrack()});
+        var player = this.broadcastList[broadcastIp];
+        writeDocument(res, {group:broadcastIp, paused:player.paused, tracks:player.list(), currentTrack:player.currentTrack()});
 			} else {
 				fs.readFile("." + path, function(error, data){
 					if (error){
@@ -54,11 +58,12 @@ listServer.on(___, function(req, res){
 					
 					var fileExtension = path.substr(path.lastIndexOf(".") + 1);
 					var mimeType = MIME_TYPES[fileExtension];
-/*
-    KOAN #5
-    should make the server to include new header in implicit requests
-*/
-					res.___("Content-Type", mimeType);
+						/*
+						  KOAN #5
+						  should make the server to include new header in implicit requests
+							res.___("Content-Type", mimeType);
+						*/
+					res.setHeader("Content-Type", mimeType);
 					if (mimeType.indexOf("text/") >= 0){
 						res.setHeader("Content-Encoding", "utf-8");
 					}
@@ -78,22 +83,28 @@ listServer.on(___, function(req, res){
 			})
 			
 			req.on('end', function(){
-/*
-    KOAN #6
-    should make the server to use querystring module
-*/
-				var query = querystring.___(body);
+					/*
+					  KOAN #6
+					  should make the server to use querystring module
+						var query = querystring.___(body);
+					*/
+				var query = querystring.parse(body);
 				var action = query.action;
 				
 				var player = self.broadcastList[broadcastIp];
 				if (action in player) {
 					player[action](function(){
-                        writeDocument(res, {group:broadcastIp, paused:player.paused, tracks:player.list(), currentTrack:player.currentTrack()});
+            writeDocument(res, {
+            	group:broadcastIp, 
+            	paused:player.paused, 
+            	tracks:player.list(), 
+            	currentTrack:player.currentTrack()
+            });
 					});
 				} else {
-                    res.writeHead(500, "Internal Server Error");
-                    res.end();
-                }
+          res.writeHead(500, "Internal Server Error");
+          res.end();
+        }
 			});
 			break;
 		
@@ -107,12 +118,12 @@ listServer.on(___, function(req, res){
 var writeDocument = function(res, doc){
 	var head = '<html><head><link rel="stylesheet" type="text/css" href="/static/style.css"></head><body>';
 	var tail = '</body></html>';
-    var info = '<p>Playlist for group ' + doc.group + '</p>';
+  var info = '<p>Playlist for group ' + doc.group + '</p>';
 	var form = '<form method="post" action="/">';
-		form += '<input type="submit" value="prev" name="action">';
-		form += doc.paused? '<input type="submit" value="play" name="action">' : '<input type="submit" value="pause" name="action">';
-		form += '<input type="submit" value="next" name="action"></form>';
-	
+	form += '<input type="submit" value="prev" name="action">';
+	form += doc.paused? '<input type="submit" value="play" name="action">' : '<input type="submit" value="pause" name="action">';
+	form += '<input type="submit" value="next" name="action"></form>';
+
 	var trackList = doc.tracks;
 	
 	var list = "<ul>";
